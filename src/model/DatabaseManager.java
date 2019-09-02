@@ -46,7 +46,7 @@ public class DatabaseManager {
         return conn;
     }
 
-    private void closeConnection() {
+    public static void closeConnection(Connection conn) {
         try {
             if (conn != null) {
                 conn.close();
@@ -55,4 +55,6 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+    
+    
 }

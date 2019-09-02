@@ -21,8 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package model;
 
-public abstract class Data {
+package controller;
+
+import java.sql.*;
+
+import model.DatabaseManager;
+import model.Monthly;
+
+public class MonthlyController {
+	private Monthly goal;
+	private Connection conn;
 	
+	public MonthlyController(Monthly goal) {
+		this.goal = goal;
+	}
+
+	public void deleteGoal() {
+		try {
+			Connection conn = DatabaseManager.getConnection();
+			String query = "DELETE FROM monthly WHERE monthly_id = ?";
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setInt(1, goal.getID());
+			stmt.execute();
+		} catch(SQLException e) {
+			
+		} finally {
+			DatabaseManager.closeConnection(conn);
+		}
+	}
+	
+
 }

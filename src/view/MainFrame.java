@@ -63,7 +63,7 @@ public class MainFrame extends JFrame {
 		getContentPane().add(panel_1);
 		
 		monthlyTable = new JTable();
-		monthlyTable.setModel(TableController.fillTable(conn));
+		monthlyTable.setModel();
 		monthlyTable.setFillsViewportHeight(true);
 		panel_1.add(monthlyTable);
 	}

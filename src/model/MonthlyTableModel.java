@@ -24,10 +24,52 @@
 
 package model;
 
-import java.util.ArrayList;
+import java.sql.*;
+import java.util.*;
 
-public class MonthlyData {
-	private ArrayList<Monthly> data;
+import javax.swing.table.AbstractTableModel;
+
+public class MonthlyTableModel extends AbstractTableModel {
+	private ArrayList<Monthly> goals;
 	
+	private String[] columnNames = new String[] {
+			"Month", "Title", "Completed"
+	};
 	
+	public MonthlyTableModel(ResultSet rs) {
+		try {
+			while (rs.next()) {
+				Monthly m = new Monthly(rs);
+				goals.add(m);
+			}
+		} catch (SQLException e) {
+			
+		}
+	}
+
+	@Override
+	public int getColumnCount() {
+		return 3; // Constant for this model
+	}
+	
+	/*
+     * JTable uses this method to determine the default renderer/ editor for
+     * each cell. If we didn't implement this method, then the last column
+     * would contain text ("true"/"false"), rather than a check box.
+     */
+    public Class getColumnClass(int c) {
+      return getValueAt(0, c).getClass();
+    }
+
+	@Override
+	public int getRowCount() {
+		return goals.size();
+	}
+
+	@Override
+	public Object getValueAt(int arg0, int arg1) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
