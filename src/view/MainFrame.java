@@ -12,15 +12,23 @@ import java.sql.Connection;
 
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 import model.MonthlyTableModel;
 
 import javax.swing.JTextArea;
+import java.awt.Dimension;
+import javax.swing.JScrollPane;
+
+import java.awt.Color;
+import java.awt.Component;
+import javax.swing.border.BevelBorder;
 
 public class MainFrame extends JFrame {
 	private JTable monthlyTable;
 	private JTextField searchField;
 	public MainFrame() throws Exception {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Monthly Goals");
 		getContentPane().setLayout(null);
 		
@@ -36,7 +44,7 @@ public class MainFrame extends JFrame {
 		
 		searchField = new JTextField();
 		searchLabel.setLabelFor(searchField);
-		searchField.setBounds(55, 8, 135, 23);
+		searchField.setBounds(59, 8, 131, 23);
 		panel.add(searchField);
 		searchField.setColumns(10);
 		
@@ -52,20 +60,31 @@ public class MainFrame extends JFrame {
 		lblDescription.setBounds(10, 157, 169, 14);
 		panel.add(lblDescription);
 		
-		JTextArea descriptionArea = new JTextArea();
-		lblDescription.setLabelFor(descriptionArea);
-		descriptionArea.setLineWrap(true);
-		descriptionArea.setBounds(10, 175, 180, 175);
-		panel.add(descriptionArea);
-		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(199, 0, 385, 361);
 		getContentPane().add(panel_1);
 		
+		JTextArea descriptionArea = new JTextArea();
+		descriptionArea.setBounds(10, 182, 180, 168);
+		panel.add(descriptionArea);
+		lblDescription.setLabelFor(descriptionArea);
+		descriptionArea.setLineWrap(true);
+		panel_1.setLayout(null);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(0, 0, 385, 361);
+		panel_1.add(scrollPane);
+		
 		monthlyTable = new JTable();
+		monthlyTable.setFillsViewportHeight(true);
+		monthlyTable.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		monthlyTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		scrollPane.setViewportView(monthlyTable);
+		monthlyTable.setColumnSelectionAllowed(true);
 		MonthlyTableModel model = new MonthlyTableModel();
 		monthlyTable.setModel(model);
-		monthlyTable.setFillsViewportHeight(true);
-		panel_1.add(monthlyTable);
+		JTableHeader monthlyTableHeader = monthlyTable.getTableHeader();
+		monthlyTableHeader.setBackground(new Color(17, 16, 47));
+		monthlyTableHeader.setForeground(Color.WHITE);
 	}
 }
