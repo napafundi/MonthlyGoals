@@ -31,6 +31,8 @@ public class DatabaseManager {
     static final String USER = "root";
     static final String PASS = "Fishycmg11!";
     static Connection conn = null;
+    static Statement stmt = null;
+    static ResultSet rs = null;
 
     public DatabaseManager() {}
 
@@ -50,6 +52,26 @@ public class DatabaseManager {
         try {
             if (conn != null) {
                 conn.close();
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void closeStatement(Statement stmt) {
+    	try {
+            if (stmt != null) {
+                stmt.close();
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void closeResultSet(ResultSet rs) {
+    	try {
+            if (rs != null) {
+                rs.close();
             }
         } catch(SQLException e) {
             e.printStackTrace();

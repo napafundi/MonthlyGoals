@@ -30,21 +30,46 @@ import java.util.*;
 import javax.swing.table.AbstractTableModel;
 
 public class MonthlyTableModel extends AbstractTableModel {
-	private ArrayList<Monthly> goals;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private ArrayList<Monthly> goals = new ArrayList<Monthly>();
 	
 	private String[] columnNames = new String[] {
 			"Month", "Title", "Completed"
 	};
 	
-	public MonthlyTableModel(ResultSet rs) {
+	public MonthlyTableModel() {
 		try {
+			Connection conn = DatabaseManager.getConnection();
+			String query = "SELECT * FROM monthly";
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
 				Monthly m = new Monthly(rs);
 				goals.add(m);
 			}
+			DatabaseManager.closeResultSet(rs);
+			DatabaseManager.closeStatement(stmt);
+			DatabaseManager.closeConnection(conn);
 		} catch (SQLException e) {
 			
 		}
+	}
+	
+	@Override
+	public Object getValueAt(int row, int col) {
+		Object temp = null;
+		if (col == 0) {
+			temp = goals.get(row).getDate();
+		} else if ( col == 1) {
+			temp = goals.get(row).getTitle();
+		} else {
+			temp = new Boolean(goals.get(row).isCompleted());
+		}
+		return temp;
 	}
 
 	@Override
@@ -57,19 +82,17 @@ public class MonthlyTableModel extends AbstractTableModel {
      * each cell. If we didn't implement this method, then the last column
      * would contain text ("true"/"false"), rather than a check box.
      */
-    public Class getColumnClass(int c) {
+    public Class<?> getColumnClass(int c) {
       return getValueAt(0, c).getClass();
+    }
+    
+    public String getColumnName(int col) {
+    	return columnNames[col];
     }
 
 	@Override
 	public int getRowCount() {
 		return goals.size();
-	}
-
-	@Override
-	public Object getValueAt(int arg0, int arg1) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

@@ -13,14 +13,14 @@ import java.sql.Connection;
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 
-import controller.TableController;
+import model.MonthlyTableModel;
 
 import javax.swing.JTextArea;
 
 public class MainFrame extends JFrame {
 	private JTable monthlyTable;
 	private JTextField searchField;
-	public MainFrame(Connection conn) throws Exception {
+	public MainFrame() throws Exception {
 		setTitle("Monthly Goals");
 		getContentPane().setLayout(null);
 		
@@ -63,7 +63,8 @@ public class MainFrame extends JFrame {
 		getContentPane().add(panel_1);
 		
 		monthlyTable = new JTable();
-		monthlyTable.setModel();
+		MonthlyTableModel model = new MonthlyTableModel();
+		monthlyTable.setModel(model);
 		monthlyTable.setFillsViewportHeight(true);
 		panel_1.add(monthlyTable);
 	}

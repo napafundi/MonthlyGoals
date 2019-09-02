@@ -31,7 +31,7 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		Connection conn = DatabaseManager.getConnection();
-		MainFrame mf = new MainFrame(conn);
+		MainFrame mf = new MainFrame();
 		mf.setSize(new Dimension(600, 400));
 		mf.setVisible(true);
 	}

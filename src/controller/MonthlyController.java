@@ -50,6 +50,4 @@ public class MonthlyController {
 			DatabaseManager.closeConnection(conn);
 		}
 	}
-	
-
 }

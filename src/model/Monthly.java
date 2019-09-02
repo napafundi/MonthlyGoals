@@ -36,7 +36,7 @@ public class Monthly extends Data {
 
     public Monthly(ResultSet rs) {
     	try {
-            monthly_id = rs.getInt("id");
+            monthly_id = rs.getInt("monthly_id");
             date = rs.getDate("date");
             title = rs.getString("title");
             description = rs.getString("description");
