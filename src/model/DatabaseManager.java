@@ -27,15 +27,14 @@ import java.sql.*;
 
 public class DatabaseManager {
     static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String URL = "jdbc:mysql://localhost/";
+    static final String URL = "jdbc:mysql://localhost/monthly_goals";
     static final String USER = "root";
     static final String PASS = "Fishycmg11!";
-
-    Connection conn = null;
+    static Connection conn = null;
 
     public DatabaseManager() {}
 
-    public Connection getConnection() {
+    public static Connection getConnection() {
         try {
             Class.forName(DRIVER);
             conn = DriverManager.getConnection(URL, USER, PASS);

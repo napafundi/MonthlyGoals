@@ -7,14 +7,20 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import java.sql.Connection;
+
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
+
+import controller.TableController;
+
 import javax.swing.JTextArea;
 
 public class MainFrame extends JFrame {
 	private JTable monthlyTable;
 	private JTextField searchField;
-	public MainFrame() {
+	public MainFrame(Connection conn) throws Exception {
 		setTitle("Monthly Goals");
 		getContentPane().setLayout(null);
 		
@@ -29,6 +35,7 @@ public class MainFrame extends JFrame {
 		panel.add(searchLabel);
 		
 		searchField = new JTextField();
+		searchLabel.setLabelFor(searchField);
 		searchField.setBounds(55, 8, 135, 23);
 		panel.add(searchField);
 		searchField.setColumns(10);
@@ -45,21 +52,18 @@ public class MainFrame extends JFrame {
 		lblDescription.setBounds(10, 157, 169, 14);
 		panel.add(lblDescription);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(10, 175, 180, 175);
-		panel.add(textArea);
+		JTextArea descriptionArea = new JTextArea();
+		lblDescription.setLabelFor(descriptionArea);
+		descriptionArea.setLineWrap(true);
+		descriptionArea.setBounds(10, 175, 180, 175);
+		panel.add(descriptionArea);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(199, 0, 385, 361);
 		getContentPane().add(panel_1);
 		
 		monthlyTable = new JTable();
-		monthlyTable.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-			}
-		));
+		monthlyTable.setModel(TableController.fillTable(conn));
 		monthlyTable.setFillsViewportHeight(true);
 		panel_1.add(monthlyTable);
 	}

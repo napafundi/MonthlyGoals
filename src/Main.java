@@ -1,3 +1,9 @@
+import java.awt.Dimension;
+import java.sql.Connection;
+
+import model.DatabaseManager;
+import view.MainFrame;
+
 /*
  * The MIT License
  *
@@ -23,9 +29,11 @@
  */
 public class Main {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	public static void main(String[] args) throws Exception {
+		Connection conn = DatabaseManager.getConnection();
+		MainFrame mf = new MainFrame(conn);
+		mf.setSize(new Dimension(600, 400));
+		mf.setVisible(true);
 	}
 
 }
