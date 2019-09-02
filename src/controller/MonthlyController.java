@@ -50,4 +50,21 @@ public class MonthlyController {
 			DatabaseManager.closeConnection(conn);
 		}
 	}
+	
+	public void addGoal() {
+		try {
+			Connection conn = DatabaseManager.getConnection();
+			String query = "INSERT INTO `monthly` (date, title, description, completed) VALUES (?, ?, ? ,?)";
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setDate(1, (Date) goal.getDate());
+			stmt.setString(2, goal.getTitle());
+			stmt.setString(3, goal.getDescription());
+			stmt.setBoolean(4, false);
+			stmt.executeUpdate();
+			DatabaseManager.closeStatement(stmt);
+			DatabaseManager.closeConnection(conn);
+		} catch(SQLException e) {
+			
+		}
+	}
 }
