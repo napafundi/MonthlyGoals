@@ -35,12 +35,7 @@ public class Monthly extends Data {
     public boolean completed;
 
     public Monthly(ResultSet rs) {
-            getData(rs);
-    }
-    
-    @Override
-    public final void getData(ResultSet rs) {
-        try {
+    	try {
             monthly_id = rs.getInt("id");
             date = rs.getDate("date");
             title = rs.getString("title");

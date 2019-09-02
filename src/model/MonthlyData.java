@@ -21,10 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package model;
 
-import java.sql.ResultSet;
+import java.util.ArrayList;
 
-public abstract class Data {
+public class MonthlyData {
+	private ArrayList<Monthly> data;
+	
 	
 }
