@@ -95,5 +95,9 @@ public class MonthlyTableModel extends AbstractTableModel {
 	public int getRowCount() {
 		return goals.size();
 	}
+	
+	public Monthly getGoal(int ind) {
+		return goals.get(ind);
+	}
 
 }

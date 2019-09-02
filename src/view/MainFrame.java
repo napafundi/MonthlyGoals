@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import model.Monthly;
 import model.MonthlyTableModel;
 
 import javax.swing.JTextArea;
@@ -23,6 +24,11 @@ import javax.swing.JScrollPane;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.border.BevelBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainFrame extends JFrame {
 	private JTable monthlyTable;
@@ -80,11 +86,21 @@ public class MainFrame extends JFrame {
 		monthlyTable.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		monthlyTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		scrollPane.setViewportView(monthlyTable);
-		monthlyTable.setColumnSelectionAllowed(true);
 		MonthlyTableModel model = new MonthlyTableModel();
 		monthlyTable.setModel(model);
 		JTableHeader monthlyTableHeader = monthlyTable.getTableHeader();
 		monthlyTableHeader.setBackground(new Color(17, 16, 47));
 		monthlyTableHeader.setForeground(Color.WHITE);
+		// Fill description textbox when selection is made
+		monthlyTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent event) {
+				if (monthlyTable.getSelectedRow() > -1) {
+					Monthly goal = model.getGoal(monthlyTable.getSelectedRow());
+					String descText = goal.getDescription();
+					descriptionArea.setText(descText);
+				}
+			}
+		});
 	}
 }
