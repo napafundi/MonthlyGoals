@@ -1,4 +1,5 @@
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.Connection;
 
 import model.DatabaseManager;
@@ -33,6 +34,9 @@ public class Main {
 		Connection conn = DatabaseManager.getConnection();
 		MainFrame mf = new MainFrame();
 		mf.setSize(new Dimension(600, 400));
+		// Place frame in center of screen
+		Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
+		mf.setLocation(screenDim.width/2 - mf.getSize().width/2, screenDim.height/2 - mf.getSize().height/2);
 		mf.setVisible(true);
 	}
 
