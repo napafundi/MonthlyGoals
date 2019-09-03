@@ -26,6 +26,7 @@ package model;
 
 import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -98,6 +99,41 @@ public class MonthlyTableModel extends AbstractTableModel {
 	
 	public Monthly getGoal(int ind) {
 		return goals.get(ind);
+	}
+	
+	public void deleteGoal(Monthly goal) {
+		try {
+			Connection conn = DatabaseManager.getConnection();
+			String query = "DELETE FROM monthly WHERE monthly_id = ?";
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setInt(1, goal.getID());
+			stmt.execute();
+			DatabaseManager.closeConnection(conn);
+			fireTableDataChanged();
+		} catch(SQLException e) {
+			
+		}
+	}
+	
+	public void addGoal(Monthly goal) {
+		try {
+			Connection conn = DatabaseManager.getConnection();
+			String query = "INSERT INTO `monthly` (date, title, description, completed) VALUES (?, ?, ? ,?)";
+			PreparedStatement stmt = conn.prepareStatement(query);
+			Date utilDate = (java.util.Date) goal.getDate().getTime();
+			java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+			stmt.setDate(1, sqlDate);
+			stmt.setString(2, goal.getTitle());
+			stmt.setString(3, goal.getDescription());
+			stmt.setBoolean(4, false);
+			stmt.executeUpdate();
+			DatabaseManager.closeStatement(stmt);
+			DatabaseManager.closeConnection(conn);
+			goals.add(goal);
+			fireTableDataChanged();
+		} catch(SQLException e) {
+			
+		}
 	}
 
 }

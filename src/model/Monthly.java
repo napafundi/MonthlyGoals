@@ -27,6 +27,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class Monthly extends Data {
@@ -46,6 +47,13 @@ public class Monthly extends Data {
         } catch(SQLException se) {
             se.printStackTrace();
         }
+    }
+    
+    public Monthly(String title, Date date, String desc) {
+    	this.title = title;
+    	this.date.setTime(date);
+    	this.description = desc;
+    	completed = false;
     }
 
 	public Calendar getDate() {

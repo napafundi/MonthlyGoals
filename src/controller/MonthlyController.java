@@ -24,51 +24,30 @@
 
 package controller;
 
-import java.sql.*;
+import java.util.Date;
 
-import model.DatabaseManager;
+import javax.swing.JOptionPane;
+
 import model.Monthly;
+import model.MonthlyTableModel;
 
 public class MonthlyController {
-	private Monthly goal;
-	private Connection conn;
+	private MonthlyTableModel model;
 	
-	public MonthlyController(Monthly goal) {
-		this.goal = goal;
+	public MonthlyController(MonthlyTableModel model) {
+		this.model = model;
 	}
-
-	public void deleteGoal() {
-		try {
-			Connection conn = DatabaseManager.getConnection();
-			String query = "DELETE FROM monthly WHERE monthly_id = ?";
-			PreparedStatement stmt = conn.prepareStatement(query);
-			stmt.setInt(1, goal.getID());
-			stmt.execute();
-		} catch(SQLException e) {
-			
-		} finally {
-			DatabaseManager.closeConnection(conn);
+	
+	public void addGoal(String title, Date date, String desc) {
+		if (title.equals("") || title.length() > 30) { // Make sure title isn't empty
+			JOptionPane.showMessageDialog(null, "Please enter a goal title. (MAX 30 CHARACTERS)");
+			return;
+		} else if (desc.contentEquals("") || desc.length() > 60) { // Make sure description isn't empty
+			JOptionPane.showMessageDialog(null, "Please enter a goal description (MAX 60 CHARACTERS)");
+			return;
+		} else {
+			Monthly newGoal = new Monthly(title, date, desc);
+			model.addGoal(newGoal);
 		}
-	}
-	
-	public void addGoal() {
-		try {
-			Connection conn = DatabaseManager.getConnection();
-			String query = "INSERT INTO `monthly` (date, title, description, completed) VALUES (?, ?, ? ,?)";
-			PreparedStatement stmt = conn.prepareStatement(query);
-			stmt.setDate(1, (Date) goal.getDate().getTime());
-			stmt.setString(2, goal.getTitle());
-			stmt.setString(3, goal.getDescription());
-			stmt.setBoolean(4, false);
-			stmt.executeUpdate();
-			DatabaseManager.closeStatement(stmt);
-			DatabaseManager.closeConnection(conn);
-		} catch(SQLException e) {
-			
-		}
-	}
-	
-	public void setGoal(Monthly goal) {
-		this.goal = goal;
 	}
 }

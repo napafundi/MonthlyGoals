@@ -30,10 +30,18 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import com.toedter.calendar.JCalendar;
+
+import controller.MonthlyController;
+import model.Monthly;
+import model.MonthlyTableModel;
+
 import javax.swing.JTextArea;
 import javax.swing.JSplitPane;
+import javax.swing.JTable;
 import javax.swing.JButton;
 import javax.swing.border.LineBorder;
+import javax.swing.table.AbstractTableModel;
+
 import java.awt.Color;
 import javax.swing.border.BevelBorder;
 import java.awt.Component;
@@ -45,7 +53,7 @@ import java.util.Date;
 
 public class AddView extends JFrame {
 	private JTextField titleField;
-	public AddView() {
+	public AddView(MonthlyTableModel model) {
 		setTitle("Add Goal");
 		getContentPane().setLayout(null);
 		
@@ -94,15 +102,10 @@ public class AddView extends JFrame {
 				String title = titleField.getText();
 				Date date = calendarField.getDate();
 				String desc = descriptionField.getText().trim(); // Must use trim to remove whitespace and newline characters, aids in checking if desc is empty
-				if (title.equals("") || title.length() > 30) { // Make sure title isn't empty
-					JOptionPane.showMessageDialog(null, "Please enter a goal title. (MAX 30 CHARACTERS)");
-					titleField.requestFocus();
-					return;
-				} else if (desc.contentEquals("") || desc.length() > 60) { // Make sure description isn't empty
-					JOptionPane.showMessageDialog(null, "Please enter a goal description (MAX 60 CHARACTERS)");
-					descriptionField.requestFocus();
-					return;
-				}
+				MonthlyController controller = new MonthlyController(model);
+				controller.addGoal(title, date, desc);
+				dispose();
+				JOptionPane.showMessageDialog(null, "Goal successfully added!");
 			}
 		});
 		addButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

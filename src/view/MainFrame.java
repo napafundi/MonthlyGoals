@@ -29,6 +29,7 @@ import java.awt.event.MouseEvent;
 public class MainFrame extends JFrame {
 	private JTable monthlyTable;
 	private JTextField searchField;
+	MonthlyTableModel model = new MonthlyTableModel();
 	public MainFrame(Dimension screenDim) throws Exception {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Monthly Goals");
@@ -54,7 +55,7 @@ public class MainFrame extends JFrame {
 		btnAddGoal.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				AddView addView = new AddView();
+				AddView addView = new AddView(model);
 				addView.setSize(new Dimension(314, 455));
 				// Place frame in center of screen
 				addView.setLocation(screenDim.width/2 - addView.getSize().width/2, screenDim.height/2 - addView.getSize().height/2);
@@ -94,7 +95,6 @@ public class MainFrame extends JFrame {
 		monthlyTable.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		monthlyTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		scrollPane.setViewportView(monthlyTable);
-		MonthlyTableModel model = new MonthlyTableModel();
 		monthlyTable.setModel(model);
 		JTableHeader monthlyTableHeader = monthlyTable.getTableHeader();
 		monthlyTableHeader.setBackground(new Color(17, 16, 47));
