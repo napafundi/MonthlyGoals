@@ -11,6 +11,7 @@ import javax.swing.SwingConstants;
 import java.sql.Connection;
 
 import javax.swing.JButton;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
@@ -91,6 +92,11 @@ public class MainFrame extends JFrame {
 		JTableHeader monthlyTableHeader = monthlyTable.getTableHeader();
 		monthlyTableHeader.setBackground(new Color(17, 16, 47));
 		monthlyTableHeader.setForeground(Color.WHITE);
+		// set default cell alignment to center text
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		monthlyTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		monthlyTable.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
 		// Fill description textbox when selection is made
 		monthlyTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
