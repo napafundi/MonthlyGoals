@@ -67,4 +67,8 @@ public class MonthlyController {
 			
 		}
 	}
+	
+	public void setGoal(Monthly goal) {
+		this.goal = goal;
+	}
 }

@@ -28,9 +28,6 @@ import javax.swing.border.BevelBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 public class MainFrame extends JFrame {
 	private JTable monthlyTable;
 	private JTextField searchField;
