@@ -26,6 +26,7 @@ package view;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import com.toedter.calendar.JCalendar;
@@ -40,6 +41,7 @@ import javax.swing.Box;
 import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Date;
 
 public class AddView extends JFrame {
 	private JTextField titleField;
@@ -86,6 +88,23 @@ public class AddView extends JFrame {
 		getContentPane().add(splitPane);
 		
 		JButton addButton = new JButton("Add Goal");
+		addButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				String title = titleField.getText();
+				Date date = calendarField.getDate();
+				String desc = descriptionField.getText().trim(); // Must use trim to remove whitespace and newline characters, aids in checking if desc is empty
+				if (title.equals("")) { // Make sure title isn't empty
+					JOptionPane.showMessageDialog(null, "Please enter a goal title.");
+					titleField.requestFocus();
+					return;
+				} else if (desc.contentEquals("")) { // Make sure description isn't empty
+					JOptionPane.showMessageDialog(null, "Please enter a goal description");
+					descriptionField.requestFocus();
+					return;
+				}
+			}
+		});
 		addButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		splitPane.setLeftComponent(addButton);
 		
