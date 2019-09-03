@@ -38,6 +38,8 @@ import javax.swing.border.BevelBorder;
 import java.awt.Component;
 import javax.swing.Box;
 import java.awt.Cursor;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class AddView extends JFrame {
 	private JTextField titleField;
@@ -87,7 +89,14 @@ public class AddView extends JFrame {
 		addButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		splitPane.setLeftComponent(addButton);
 		
+		// Closes the addView frame upon clicking
 		JButton cancelButton = new JButton("Cancel");
+		cancelButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				dispose();
+			}
+		});
 		cancelButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		splitPane.setRightComponent(cancelButton);
 		splitPane.setDividerLocation(0.5);
