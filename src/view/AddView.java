@@ -94,12 +94,12 @@ public class AddView extends JFrame {
 				String title = titleField.getText();
 				Date date = calendarField.getDate();
 				String desc = descriptionField.getText().trim(); // Must use trim to remove whitespace and newline characters, aids in checking if desc is empty
-				if (title.equals("")) { // Make sure title isn't empty
-					JOptionPane.showMessageDialog(null, "Please enter a goal title.");
+				if (title.equals("") || title.length() > 30) { // Make sure title isn't empty
+					JOptionPane.showMessageDialog(null, "Please enter a goal title. (MAX 30 CHARACTERS)");
 					titleField.requestFocus();
 					return;
-				} else if (desc.contentEquals("")) { // Make sure description isn't empty
-					JOptionPane.showMessageDialog(null, "Please enter a goal description");
+				} else if (desc.contentEquals("") || desc.length() > 60) { // Make sure description isn't empty
+					JOptionPane.showMessageDialog(null, "Please enter a goal description (MAX 60 CHARACTERS)");
 					descriptionField.requestFocus();
 					return;
 				}
