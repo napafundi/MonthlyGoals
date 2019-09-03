@@ -56,7 +56,7 @@ public class MonthlyController {
 			Connection conn = DatabaseManager.getConnection();
 			String query = "INSERT INTO `monthly` (date, title, description, completed) VALUES (?, ?, ? ,?)";
 			PreparedStatement stmt = conn.prepareStatement(query);
-			stmt.setDate(1, (Date) goal.getDate());
+			stmt.setDate(1, (Date) goal.getDate().getTime());
 			stmt.setString(2, goal.getTitle());
 			stmt.setString(3, goal.getDescription());
 			stmt.setBoolean(4, false);

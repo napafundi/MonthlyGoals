@@ -25,11 +25,13 @@ package model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
+import java.text.DateFormatSymbols;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class Monthly extends Data {
     private int monthly_id;
-    public Date date;
+    public Calendar date = Calendar.getInstance();
     public String title;
     public String description;
     public boolean completed;
@@ -37,7 +39,7 @@ public class Monthly extends Data {
     public Monthly(ResultSet rs) {
     	try {
             monthly_id = rs.getInt("monthly_id");
-            date = rs.getDate("date");
+            date.setTime(rs.getDate("date"));
             title = rs.getString("title");
             description = rs.getString("description");
             completed = rs.getBoolean("completed");
@@ -46,12 +48,21 @@ public class Monthly extends Data {
         }
     }
 
-	public Date getDate() {
+	public Calendar getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(Calendar date) {
 		this.date = date;
+	}
+	
+	public String getMonth() {
+		int monthNum = Calendar.MONTH;
+		String month = "error";
+		if (monthNum >= 0 && monthNum <= 11) {
+			month = date.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+		}
+		return month;
 	}
 
 	public String getTitle() {

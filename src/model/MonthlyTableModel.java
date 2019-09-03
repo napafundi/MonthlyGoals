@@ -63,7 +63,7 @@ public class MonthlyTableModel extends AbstractTableModel {
 	public Object getValueAt(int row, int col) {
 		Object temp = null;
 		if (col == 0) {
-			temp = goals.get(row).getDate();
+			temp = goals.get(row).getMonth();
 		} else if ( col == 1) {
 			temp = goals.get(row).getTitle();
 		} else {
