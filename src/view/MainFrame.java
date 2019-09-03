@@ -1,37 +1,35 @@
 package view;
 
 import javax.swing.JFrame;
-import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import java.sql.Connection;
-
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 import model.Monthly;
 import model.MonthlyTableModel;
 
 import javax.swing.JTextArea;
-import java.awt.Dimension;
 import javax.swing.JScrollPane;
 
 import java.awt.Color;
-import java.awt.Component;
 import javax.swing.border.BevelBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainFrame extends JFrame {
 	private JTable monthlyTable;
 	private JTextField searchField;
-	public MainFrame() throws Exception {
+	public MainFrame(Dimension screenDim) throws Exception {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Monthly Goals");
 		getContentPane().setLayout(null);
@@ -53,10 +51,22 @@ public class MainFrame extends JFrame {
 		searchField.setColumns(10);
 		
 		JButton btnAddGoal = new JButton("Add Goal");
+		btnAddGoal.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				AddView addView = new AddView();
+				addView.setSize(new Dimension(314, 455));
+				// Place frame in center of screen
+				addView.setLocation(screenDim.width/2 - addView.getSize().width/2, screenDim.height/2 - addView.getSize().height/2);
+				addView.setVisible(true);
+			}
+		});
+		btnAddGoal.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAddGoal.setBounds(10, 36, 180, 23);
 		panel.add(btnAddGoal);
 		
 		JButton btnDeleteGoal = new JButton("Delete Goal");
+		btnDeleteGoal.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnDeleteGoal.setBounds(10, 70, 180, 23);
 		panel.add(btnDeleteGoal);
 		

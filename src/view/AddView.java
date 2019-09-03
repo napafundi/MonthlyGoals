@@ -35,10 +35,14 @@ import javax.swing.JButton;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import javax.swing.border.BevelBorder;
+import java.awt.Component;
+import javax.swing.Box;
+import java.awt.Cursor;
 
 public class AddView extends JFrame {
 	private JTextField titleField;
 	public AddView() {
+		setTitle("Add Goal");
 		getContentPane().setLayout(null);
 		
 		JLabel titleLabel = new JLabel("Title:");
@@ -62,6 +66,8 @@ public class AddView extends JFrame {
 		titleField.setColumns(10);
 		
 		JCalendar calendarField = new JCalendar();
+		calendarField.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		calendarField.getDayChooser().getDayPanel().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		calendarField.setWeekOfYearVisible(false);
 		calendarField.setTodayButtonVisible(true);
 		calendarField.setBounds(88, 36, 198, 153);
@@ -78,9 +84,11 @@ public class AddView extends JFrame {
 		getContentPane().add(splitPane);
 		
 		JButton addButton = new JButton("Add Goal");
+		addButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		splitPane.setLeftComponent(addButton);
 		
 		JButton cancelButton = new JButton("Cancel");
+		cancelButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		splitPane.setRightComponent(cancelButton);
 		splitPane.setDividerLocation(0.5);
 	}

@@ -29,13 +29,14 @@ import view.MainFrame;
  * THE SOFTWARE.
  */
 public class Main {
+	
 
 	public static void main(String[] args) throws Exception {
 		Connection conn = DatabaseManager.getConnection();
-		MainFrame mf = new MainFrame();
+		final Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
+		MainFrame mf = new MainFrame(screenDim);
 		mf.setSize(new Dimension(600, 400));
 		// Place frame in center of screen
-		Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
 		mf.setLocation(screenDim.width/2 - mf.getSize().width/2, screenDim.height/2 - mf.getSize().height/2);
 		mf.setVisible(true);
 	}
