@@ -103,9 +103,11 @@ public class AddView extends JFrame {
 				Date date = calendarField.getDate();
 				String desc = descriptionField.getText().trim(); // Must use trim to remove whitespace and newline characters, aids in checking if desc is empty
 				MonthlyController controller = new MonthlyController(model);
-				controller.addGoal(title, date, desc);
-				dispose();
-				JOptionPane.showMessageDialog(null, "Goal successfully added!");
+				String result = controller.addGoal(title, date, desc);
+				JOptionPane.showMessageDialog(null, result);
+				if ("Goal successfully added".equals(result)) {
+					dispose(); // Close the addView on success
+				}
 			}
 		});
 		addButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

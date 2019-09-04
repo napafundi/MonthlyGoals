@@ -38,16 +38,14 @@ public class MonthlyController {
 		this.model = model;
 	}
 	
-	public void addGoal(String title, Date date, String desc) {
-		if (title.equals("") || title.length() > 30) { // Make sure title isn't empty
-			JOptionPane.showMessageDialog(null, "Please enter a goal title. (MAX 30 CHARACTERS)");
-			return;
-		} else if (desc.contentEquals("") || desc.length() > 60) { // Make sure description isn't empty
-			JOptionPane.showMessageDialog(null, "Please enter a goal description (MAX 60 CHARACTERS)");
-			return;
+	public String addGoal(String title, Date date, String desc) {
+		if (title.equals("") || title.length() > 30) { // Make sure title isn't empty or longer than 30 char
+			return "Please enter a goal title. (MAX 30 CHARACTERS)";
+		} else if (desc.contentEquals("") || desc.length() > 60) { // Make sure description isn't empty or longer than 60 char
+			return "Please enter a goal description (MAX 60 CHARACTERS)";
 		} else {
 			Monthly newGoal = new Monthly(title, date, desc);
-			model.addGoal(newGoal);
+			return model.addGoal(newGoal);
 		}
 	}
 }

@@ -115,7 +115,7 @@ public class MonthlyTableModel extends AbstractTableModel {
 		}
 	}
 	
-	public void addGoal(Monthly goal) {
+	public String addGoal(Monthly goal) {
 		try {
 			Connection conn = DatabaseManager.getConnection();
 			String query = "INSERT INTO `monthly` (date, title, description, completed) VALUES (?, ?, ? ,?)";
@@ -131,9 +131,11 @@ public class MonthlyTableModel extends AbstractTableModel {
 			DatabaseManager.closeConnection(conn);
 			goals.add(goal);
 			fireTableDataChanged();
+			return "Goal successfully added";
 		} catch(SQLException e) {
 			
 		}
+		return "There was an error connecting to the database.";
 	}
 
 }
