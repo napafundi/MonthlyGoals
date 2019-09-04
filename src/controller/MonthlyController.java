@@ -27,6 +27,9 @@ package controller;
 import java.util.Date;
 
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import model.Monthly;
 import model.MonthlyTableModel;
@@ -38,6 +41,7 @@ public class MonthlyController {
 		this.model = model;
 	}
 	
+	// Check to make sure title and description inputs are valid before adding to the database
 	public String addGoal(String title, Date date, String desc) {
 		if (title.equals("") || title.length() > 30) { // Make sure title isn't empty or longer than 30 char
 			return "Please enter a goal title. (MAX 30 CHARACTERS)";
@@ -46,6 +50,15 @@ public class MonthlyController {
 		} else {
 			Monthly newGoal = new Monthly(title, date, desc);
 			return model.addGoal(newGoal);
+		}
+	}
+	
+	// Filter the table based on text within the searchField
+	public void setFilter(String searchTxt, TableRowSorter<TableModel> rowSorter) {
+		if (searchTxt.trim().length() == 0) {
+			rowSorter.setRowFilter(null);
+		} else {
+			rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchTxt));
 		}
 	}
 }

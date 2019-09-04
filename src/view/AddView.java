@@ -86,8 +86,9 @@ public class AddView extends JFrame {
 		getContentPane().add(calendarField);
 		
 		JTextArea descriptionField = new JTextArea();
-		descriptionField.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		descriptionField.setWrapStyleWord(true);
+		descriptionField.setLineWrap(true);
+		descriptionField.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		descriptionField.setBounds(88, 193, 198, 176);
 		getContentPane().add(descriptionField);
 		

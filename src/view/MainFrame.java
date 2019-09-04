@@ -10,7 +10,10 @@ import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
+import controller.MonthlyController;
 import model.Monthly;
 import model.MonthlyTableModel;
 
@@ -25,11 +28,14 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class MainFrame extends JFrame {
 	private JTable monthlyTable;
 	private JTextField searchField;
 	MonthlyTableModel model = new MonthlyTableModel();
+	TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(model);
 	public MainFrame(Dimension screenDim) throws Exception {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Monthly Goals");
@@ -46,12 +52,22 @@ public class MainFrame extends JFrame {
 		panel.add(searchLabel);
 		
 		searchField = new JTextField();
+		// Filter the table values when the searchField text changes
+		searchField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				String searchTxt = searchField.getText();
+				MonthlyController controller = new MonthlyController(model);
+				controller.setFilter(searchTxt, rowSorter);
+			}
+		});
 		searchLabel.setLabelFor(searchField);
 		searchField.setBounds(59, 8, 131, 23);
 		panel.add(searchField);
 		searchField.setColumns(10);
 		
 		JButton btnAddGoal = new JButton("Add Goal");
+		// Show addView frame on button click
 		btnAddGoal.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -96,6 +112,7 @@ public class MainFrame extends JFrame {
 		monthlyTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		scrollPane.setViewportView(monthlyTable);
 		monthlyTable.setModel(model);
+		monthlyTable.setRowSorter(rowSorter);
 		JTableHeader monthlyTableHeader = monthlyTable.getTableHeader();
 		monthlyTableHeader.setBackground(new Color(17, 16, 47));
 		monthlyTableHeader.setForeground(Color.WHITE);
