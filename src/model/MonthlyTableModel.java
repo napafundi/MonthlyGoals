@@ -60,6 +60,12 @@ public class MonthlyTableModel extends AbstractTableModel {
 		}
 	}
 	
+	// Allow user to edit the "Completed" column
+	@Override
+	public boolean isCellEditable(int row, int column) {
+		return column == 2;
+	}
+	
 	@Override
 	public Object getValueAt(int row, int col) {
 		Object temp = null;
@@ -71,6 +77,28 @@ public class MonthlyTableModel extends AbstractTableModel {
 			temp = new Boolean(goals.get(row).isCompleted());
 		}
 		return temp;
+	}
+	
+	@Override
+	public void setValueAt(Object aValue, int row, int col) {
+		// Update checkbox on click
+		if (aValue instanceof Boolean && col == 2) {
+			try {
+				goals.get(row).setCompleted((boolean) aValue);
+				Monthly goal = goals.get(row);
+				Connection conn = DatabaseManager.getConnection();
+				String query = "UPDATE monthly SET completed = ? WHERE monthly_id = ?";
+				PreparedStatement stmt = conn.prepareStatement(query);
+				stmt.setBoolean(1, (boolean) aValue);
+				stmt.setInt(2, goal.getID());
+				stmt.execute();
+				DatabaseManager.closeConnection(conn);
+				fireTableDataChanged();
+			} catch(SQLException e) {
+				
+			}
+			
+		}
 	}
 
 	@Override
