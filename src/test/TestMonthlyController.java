@@ -48,21 +48,21 @@ class TestMonthlyController {
 	}
 
 	@Test
-	void testEmptyTitle() {
+	void testEmptyTitleReturnsErrorMessage() {
 		title = "";
 		result = controller.addGoal(title, date, desc);
 		Assert.assertTrue("Please enter a goal title. (MAX 30 CHARACTERS)".contentEquals(result));
 	}
 	
 	@Test
-	void testLongTitle() {
+	void testLongTitleReturnsErrorMessage() {
 		title = "Hello my name is Nick and I am writing a title that is too long and won't fit in the db.";
 		result = controller.addGoal(title, date, desc);
 		Assert.assertTrue("Please enter a goal title. (MAX 30 CHARACTERS)".contentEquals(result));
 	}
 	
 	@Test
-	void testEmptyDesc() {
+	void testEmptyDescReturnsErrorMessage() {
 		title = "hello"; // title must be non-empty and length <= 30
 		desc = "";
 		result = controller.addGoal(title, date, desc);
@@ -70,7 +70,7 @@ class TestMonthlyController {
 	}
 	
 	@Test
-	void testLongDesc() {
+	void testLongDescReturnsErrorMessage() {
 		title = "hello"; // title must be non-empty and length <= 30
 		desc = "Hello my name is Nick and I am writing a title that is too long and won't fit in the db becase the description can only be 60 char.";
 		result = controller.addGoal(title, date, desc);

@@ -32,7 +32,6 @@ public class Main {
 	
 
 	public static void main(String[] args) throws Exception {
-		Connection conn = DatabaseManager.getConnection();
 		final Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
 		MainFrame mf = new MainFrame(screenDim);
 		mf.setSize(new Dimension(600, 400));

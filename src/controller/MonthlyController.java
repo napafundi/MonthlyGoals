@@ -53,6 +53,13 @@ public class MonthlyController {
 		}
 	}
 	
+	// Check to make sure the user selected yes to deleting the goal before deleting from the database
+	public void deleteGoal(int option, Monthly goal) {
+		if (option == JOptionPane.YES_OPTION) {
+			model.deleteGoal(goal);
+		}
+	}
+	
 	// Filter the table based on text within the searchField
 	public void setFilter(String searchTxt, TableRowSorter<TableModel> rowSorter) {
 		if (searchTxt.trim().length() == 0) {

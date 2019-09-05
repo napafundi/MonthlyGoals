@@ -79,9 +79,10 @@ public class MonthlyTableModel extends AbstractTableModel {
 		return temp;
 	}
 	
+	// Update checkbox and goal's completed value on click
 	@Override
 	public void setValueAt(Object aValue, int row, int col) {
-		// Update checkbox on click
+		
 		if (aValue instanceof Boolean && col == 2) {
 			try {
 				goals.get(row).setCompleted((boolean) aValue);
@@ -129,6 +130,7 @@ public class MonthlyTableModel extends AbstractTableModel {
 		return goals.get(ind);
 	}
 	
+	// Delete a selected goal from the database and update the table model
 	public void deleteGoal(Monthly goal) {
 		try {
 			Connection conn = DatabaseManager.getConnection();
@@ -136,6 +138,7 @@ public class MonthlyTableModel extends AbstractTableModel {
 			PreparedStatement stmt = conn.prepareStatement(query);
 			stmt.setInt(1, goal.getID());
 			stmt.execute();
+			goals.remove(goal);
 			DatabaseManager.closeConnection(conn);
 			fireTableDataChanged();
 		} catch(SQLException e) {
@@ -143,6 +146,7 @@ public class MonthlyTableModel extends AbstractTableModel {
 		}
 	}
 	
+	// Add a goal to the database and update the table model
 	public String addGoal(Monthly goal) {
 		try {
 			Connection conn = DatabaseManager.getConnection();

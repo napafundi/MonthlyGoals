@@ -3,6 +3,7 @@ package view;
 import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -30,10 +31,19 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.UIManager;
 
 public class MainFrame extends JFrame {
+	private JPanel panel;
+	private JLabel searchLabel;
+	private JButton btnAddGoal;
+	private JButton btnDeleteGoal;
+	private JLabel lblDescription;
+	private JPanel panel_1;
+	private JScrollPane scrollPane;
 	private JTable monthlyTable;
 	private JTextField searchField;
+	private JTextArea descriptionArea;
 	MonthlyTableModel model = new MonthlyTableModel();
 	TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(model);
 	public MainFrame(Dimension screenDim) throws Exception {
@@ -41,12 +51,12 @@ public class MainFrame extends JFrame {
 		setTitle("Monthly Goals");
 		getContentPane().setLayout(null);
 		
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		panel.setBounds(0, 0, 200, 361);
 		getContentPane().add(panel);
 		panel.setLayout(null);
 		
-		JLabel searchLabel = new JLabel("Search:");
+		searchLabel = new JLabel("Search:");
 		searchLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		searchLabel.setBounds(10, 11, 46, 14);
 		panel.add(searchLabel);
@@ -66,7 +76,7 @@ public class MainFrame extends JFrame {
 		panel.add(searchField);
 		searchField.setColumns(10);
 		
-		JButton btnAddGoal = new JButton("Add Goal");
+		btnAddGoal = new JButton("Add Goal");
 		// Show addView frame on button click
 		btnAddGoal.addMouseListener(new MouseAdapter() {
 			@Override
@@ -82,27 +92,44 @@ public class MainFrame extends JFrame {
 		btnAddGoal.setBounds(10, 36, 180, 23);
 		panel.add(btnAddGoal);
 		
-		JButton btnDeleteGoal = new JButton("Delete Goal");
+		btnDeleteGoal = new JButton("Delete Goal");
+		btnDeleteGoal.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if (monthlyTable.getSelectedRow() > -1) {
+					Monthly goal = model.getGoal(monthlyTable.getSelectedRow());
+					int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this goal? It cannot be undone.", null, JOptionPane.YES_NO_OPTION);
+					MonthlyController controller = new MonthlyController(model);
+					controller.deleteGoal(option, goal);
+					if (monthlyTable.getSelectedRow() == -1) {
+						descriptionArea.setText("");
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Please select a goal to be deleted.");
+				}
+			}
+		});
 		btnDeleteGoal.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnDeleteGoal.setBounds(10, 70, 180, 23);
 		panel.add(btnDeleteGoal);
 		
-		JLabel lblDescription = new JLabel("Description:");
+		lblDescription = new JLabel("Description:");
 		lblDescription.setBounds(10, 157, 169, 14);
 		panel.add(lblDescription);
 		
-		JPanel panel_1 = new JPanel();
+		panel_1 = new JPanel();
 		panel_1.setBounds(199, 0, 385, 361);
 		getContentPane().add(panel_1);
 		
-		JTextArea descriptionArea = new JTextArea();
+		descriptionArea = new JTextArea();
+		descriptionArea.setBorder(UIManager.getBorder("TextField.border"));
 		descriptionArea.setBounds(10, 182, 180, 168);
 		panel.add(descriptionArea);
 		lblDescription.setLabelFor(descriptionArea);
 		descriptionArea.setLineWrap(true);
 		panel_1.setLayout(null);
 		
-		JScrollPane scrollPane = new JScrollPane();
+		scrollPane = new JScrollPane();
 		scrollPane.setBounds(0, 0, 385, 361);
 		panel_1.add(scrollPane);
 		
