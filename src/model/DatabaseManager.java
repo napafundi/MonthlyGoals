@@ -25,6 +25,11 @@ package model;
 
 import java.sql.*;
 
+/**
+ * A utility class to handle database connections
+ * @author Nick Pafundi
+ *
+ */
 public class DatabaseManager {
     static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     static final String URL = "jdbc:mysql://localhost/monthly_goals";

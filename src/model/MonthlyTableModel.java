@@ -30,11 +30,13 @@ import java.util.Date;
 
 import javax.swing.table.AbstractTableModel;
 
+/**
+ * The model used by MainFrame's monthlyTable.
+ * @author Nick Pafundi
+ *
+ */
+@SuppressWarnings("serial") // Ignore serialID warning
 public class MonthlyTableModel extends AbstractTableModel {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 	private ArrayList<Monthly> goals = new ArrayList<Monthly>();
 	
@@ -42,6 +44,9 @@ public class MonthlyTableModel extends AbstractTableModel {
 			"Month", "Title", "Completed"
 	};
 	
+	/**
+	 * Get results from querying the 'monthly' SQL table, instantiate Monthly objects and append them to the goals ArrayList
+	 */
 	public MonthlyTableModel() {
 		try {
 			Connection conn = DatabaseManager.getConnection();
@@ -60,7 +65,9 @@ public class MonthlyTableModel extends AbstractTableModel {
 		}
 	}
 	
-	// Allow user to edit the "Completed" column
+	/**
+	 * Allow user to edit the "Completed" column
+	 */
 	@Override
 	public boolean isCellEditable(int row, int column) {
 		return column == 2;
@@ -69,17 +76,19 @@ public class MonthlyTableModel extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int row, int col) {
 		Object temp = null;
-		if (col == 0) {
+		if (col == 0) { // Month column
 			temp = goals.get(row).getMonth();
-		} else if ( col == 1) {
+		} else if ( col == 1) { // Title column
 			temp = goals.get(row).getTitle();
-		} else {
+		} else { // Completed column
 			temp = new Boolean(goals.get(row).isCompleted());
 		}
 		return temp;
 	}
 	
-	// Update checkbox and goal's completed value on click
+	/**
+	 * Check if the given cell is in the Completed column, then update both the model and the SQL table to represent the new Monthly.completed value
+	 */
 	@Override
 	public void setValueAt(Object aValue, int row, int col) {
 		
@@ -130,7 +139,9 @@ public class MonthlyTableModel extends AbstractTableModel {
 		return goals.get(ind);
 	}
 	
-	// Delete a selected goal from the database and update the table model
+	/** Delete a selected goal from the database and update the table model
+	 * @param goal The goal to be removed from the database and model
+	 */
 	public void deleteGoal(Monthly goal) {
 		try {
 			Connection conn = DatabaseManager.getConnection();
@@ -146,7 +157,11 @@ public class MonthlyTableModel extends AbstractTableModel {
 		}
 	}
 	
-	// Add a goal to the database and update the table model
+	/**
+	 * Add a goal to the database and update the table model
+	 * @param goal The new goal to be added to the database and model
+	 * @return Returns a string representing the success/failure of adding the goal to the db and model. Will be displayed by a JOptionPane.
+	 */
 	public String addGoal(Monthly goal) {
 		try {
 			Connection conn = DatabaseManager.getConnection();
@@ -164,6 +179,31 @@ public class MonthlyTableModel extends AbstractTableModel {
 			goals.add(goal);
 			fireTableDataChanged();
 			return "Goal successfully added";
+		} catch(SQLException e) {
+			
+		}
+		return "There was an error connecting to the database.";
+	}
+	
+	/**
+	 * Updates the description of the given goal
+	 * @param newDesc The new description of the given goal
+	 * @param goal The goal to be updated
+	 * @return Returns a string representing the success/failure of updating the goal's description.
+	 */
+	public String updateDescription(String newDesc, Monthly goal) {
+		try {
+			Connection conn = DatabaseManager.getConnection();
+			String query = "UPDATE `monthly` SET description = ? WHERE monthly_id = ?";
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1,  newDesc);
+			stmt.setInt(2, goal.getID());
+			stmt.executeUpdate();
+			DatabaseManager.closeStatement(stmt);
+			DatabaseManager.closeConnection(conn);
+			goal.setDescription(newDesc);
+			fireTableDataChanged();
+			return "Goal description successfully updated.";
 		} catch(SQLException e) {
 			
 		}

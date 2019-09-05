@@ -30,13 +30,21 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class Monthly extends Data {
+/**
+ * Stores the data for each monthly goal
+ * @author Nick Pafundi
+ *
+ */
+public class Monthly {
     private int monthly_id;
     public Calendar date = Calendar.getInstance();
     public String title;
     public String description;
     public boolean completed;
 
+    /**
+     * @param rs The MySQL ResultSet containing the data to instantiate a Monthly object
+     */
     public Monthly(ResultSet rs) {
     	try {
             monthly_id = rs.getInt("monthly_id");
@@ -49,6 +57,12 @@ public class Monthly extends Data {
         }
     }
     
+    /**
+     * Instantiates a Monthly object based on a given title, date and description. Completed is set to false by default. (You wouldn't create a goal you've already completed)
+     * @param title The title for the goal
+     * @param date The date for the goal
+     * @param desc The description of the goal
+     */
     public Monthly(String title, Date date, String desc) {
     	this.title = title;
     	this.date.setTime(date);
@@ -64,6 +78,10 @@ public class Monthly extends Data {
 		this.date = date;
 	}
 	
+	/**
+	 * Used by the MonthlyTableModel to return the goal's month.
+	 * @return Returns a string representation of the goal's month. If the month's int value is outside the bounds, will display "error"
+	 */
 	public String getMonth() {
 		int monthNum = Calendar.MONTH;
 		String month = "error";

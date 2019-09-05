@@ -51,23 +51,36 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Date;
 
+/**
+ * A pop-up frame that allows users to add a goal to the db and model
+ * @author Nick Pafundi
+ *
+ */
 public class AddView extends JFrame {
+	private JLabel titleLabel;
+	private JLabel dateLabel;
+	private JLabel descLabel;
 	private JTextField titleField;
+	private JCalendar calendarField;
+	private JTextArea descriptionField;
+	private JSplitPane splitPane;
+	private JButton addButton;
+	JButton cancelButton;
 	public AddView(MonthlyTableModel model) {
 		setTitle("Add Goal");
 		getContentPane().setLayout(null);
 		
-		JLabel titleLabel = new JLabel("Title:");
+		titleLabel = new JLabel("Title:");
 		titleLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		titleLabel.setBounds(10, 11, 68, 14);
 		getContentPane().add(titleLabel);
 		
-		JLabel dateLabel = new JLabel("Date:");
+		dateLabel = new JLabel("Date:");
 		dateLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		dateLabel.setBounds(10, 36, 68, 14);
 		getContentPane().add(dateLabel);
 		
-		JLabel descLabel = new JLabel("Description:");
+		descLabel = new JLabel("Description:");
 		descLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		descLabel.setBounds(10, 198, 68, 14);
 		getContentPane().add(descLabel);
@@ -77,7 +90,7 @@ public class AddView extends JFrame {
 		getContentPane().add(titleField);
 		titleField.setColumns(10);
 		
-		JCalendar calendarField = new JCalendar();
+		calendarField = new JCalendar();
 		calendarField.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		calendarField.getDayChooser().getDayPanel().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		calendarField.setWeekOfYearVisible(false);
@@ -85,19 +98,22 @@ public class AddView extends JFrame {
 		calendarField.setBounds(88, 36, 198, 153);
 		getContentPane().add(calendarField);
 		
-		JTextArea descriptionField = new JTextArea();
+		descriptionField = new JTextArea();
 		descriptionField.setWrapStyleWord(true);
 		descriptionField.setLineWrap(true);
 		descriptionField.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		descriptionField.setBounds(88, 193, 198, 176);
 		getContentPane().add(descriptionField);
 		
-		JSplitPane splitPane = new JSplitPane();
+		splitPane = new JSplitPane();
 		splitPane.setBounds(10, 376, 280, 25);
 		getContentPane().add(splitPane);
 		
-		JButton addButton = new JButton("Add Goal");
+		addButton = new JButton("Add Goal");
 		addButton.addMouseListener(new MouseAdapter() {
+			/**
+			 * Add a goal to the db and model
+			 */
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				String title = titleField.getText();
@@ -107,15 +123,14 @@ public class AddView extends JFrame {
 				String result = controller.addGoal(title, date, desc);
 				JOptionPane.showMessageDialog(null, result);
 				if ("Goal successfully added".equals(result)) {
-					dispose(); // Close the addView on success
+					dispose(); // Close the addView on success, else let the user enter the correct information
 				}
 			}
 		});
 		addButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		splitPane.setLeftComponent(addButton);
 		
-		// Closes the addView frame upon clicking
-		JButton cancelButton = new JButton("Cancel");
+		cancelButton = new JButton("Cancel");
 		cancelButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {

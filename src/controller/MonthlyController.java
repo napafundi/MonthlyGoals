@@ -34,6 +34,12 @@ import javax.swing.table.TableRowSorter;
 import model.Monthly;
 import model.MonthlyTableModel;
 
+
+/**
+ * A controller for MonthlyTableModel that prevents invalid data from being passed to the model
+ * @author Nick Pafundi
+ *
+ */
 public class MonthlyController {
 	private MonthlyTableModel model;
 	
@@ -41,7 +47,13 @@ public class MonthlyController {
 		this.model = model;
 	}
 	
-	// Check to make sure title and description inputs are valid before adding to the database
+	/**
+	 * Check to make sure title and description inputs are valid before sending to the MonthlyTableModel
+	 * @param title The title of the goal to be added
+	 * @param date The date of the goal to be added
+	 * @param desc The description of the goal to be added
+	 * @return Returns a string indicating the success/failure of adding the goal, which is displayed by a JOptionPane
+	 */
 	public String addGoal(String title, Date date, String desc) {
 		if (title.equals("") || title.length() > 30) { // Make sure title isn't empty or longer than 30 char
 			return "Please enter a goal title. (MAX 30 CHARACTERS)";
@@ -53,14 +65,36 @@ public class MonthlyController {
 		}
 	}
 	
-	// Check to make sure the user selected yes to deleting the goal before deleting from the database
+	/**
+	 * Check to make sure the user selected yes to deleting the goal before sending to MonthlyTableModel for attempted deletion
+	 * @param option Integer representation of the selection made. (YES or NO)
+	 * @param goal The Monthly goal object to be deleted
+	 */
 	public void deleteGoal(int option, Monthly goal) {
 		if (option == JOptionPane.YES_OPTION) {
 			model.deleteGoal(goal);
 		}
 	}
 	
-	// Filter the table based on text within the searchField
+	/**
+	 * Check to make sure the new description to be updated for a goal is non-empty and less than 60 characters long
+	 * @param newDesc The new description to be checked
+	 * @param goal The goal whose description will be updated
+	 * @return Returns a string indicating the success/failure of updating the description, which is displayed by a JOptionPane
+	 */
+	public String updateDescription(String newDesc, Monthly goal) {
+		if (newDesc.length() <= 60 && !"".equals(newDesc)) {
+			return model.updateDescription(newDesc, goal);
+		} else {
+			return "New description must be non-empty and less than 60 characters";
+		}
+	}
+	
+	/**
+	 * Filter the table based on text within the searchField
+	 * @param searchTxt The filter text to be applied to the table
+	 * @param rowSorter The TableRowSorter object that filters the results based on the new filter
+	 */
 	public void setFilter(String searchTxt, TableRowSorter<TableModel> rowSorter) {
 		if (searchTxt.trim().length() == 0) {
 			rowSorter.setRowFilter(null);

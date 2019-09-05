@@ -28,6 +28,13 @@ import view.MainFrame;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
+
+/**
+ * Creates MainFrame, sets dimensions and then displays the frame based on the screen size
+ * @author Nick Pafundi
+ *
+ */
 public class Main {
 	
 

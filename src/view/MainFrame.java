@@ -33,6 +33,11 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.UIManager;
 
+/**
+ * The main GUI view of the application. Includes a table, a series of buttons and a search field.
+ * @author Nick Pafundi
+ *
+ */
 public class MainFrame extends JFrame {
 	private JPanel panel;
 	private JLabel searchLabel;
@@ -44,8 +49,10 @@ public class MainFrame extends JFrame {
 	private JTable monthlyTable;
 	private JTextField searchField;
 	private JTextArea descriptionArea;
+	JButton updateDescBtn;
 	MonthlyTableModel model = new MonthlyTableModel();
 	TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(model);
+	
 	public MainFrame(Dimension screenDim) throws Exception {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Monthly Goals");
@@ -62,8 +69,10 @@ public class MainFrame extends JFrame {
 		panel.add(searchLabel);
 		
 		searchField = new JTextField();
-		// Filter the table values when the searchField text changes
 		searchField.addKeyListener(new KeyAdapter() {
+			/**
+			 * Filter the table values when the searchField text changes
+			 */
 			@Override
 			public void keyReleased(KeyEvent arg0) {
 				String searchTxt = searchField.getText();
@@ -77,8 +86,10 @@ public class MainFrame extends JFrame {
 		searchField.setColumns(10);
 		
 		btnAddGoal = new JButton("Add Goal");
-		// Show addView frame on button click
 		btnAddGoal.addMouseListener(new MouseAdapter() {
+			/**
+			 * Show addView frame when clicked
+			 */
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				AddView addView = new AddView(model);
@@ -94,6 +105,9 @@ public class MainFrame extends JFrame {
 		
 		btnDeleteGoal = new JButton("Delete Goal");
 		btnDeleteGoal.addMouseListener(new MouseAdapter() {
+			/**
+			 * Attempt to delete selected goal upon clicking
+			 */
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				if (monthlyTable.getSelectedRow() > -1) {
@@ -101,7 +115,7 @@ public class MainFrame extends JFrame {
 					int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this goal? It cannot be undone.", null, JOptionPane.YES_NO_OPTION);
 					MonthlyController controller = new MonthlyController(model);
 					controller.deleteGoal(option, goal);
-					if (monthlyTable.getSelectedRow() == -1) {
+					if (monthlyTable.getSelectedRow() == -1) { // When goal is deleted and model is updated, the row disappears and getSelectedRow should be -1, so descriptionArea text should become empty
 						descriptionArea.setText("");
 					}
 				} else {
@@ -114,7 +128,7 @@ public class MainFrame extends JFrame {
 		panel.add(btnDeleteGoal);
 		
 		lblDescription = new JLabel("Description:");
-		lblDescription.setBounds(10, 157, 169, 14);
+		lblDescription.setBounds(10, 135, 169, 14);
 		panel.add(lblDescription);
 		
 		panel_1 = new JPanel();
@@ -123,10 +137,31 @@ public class MainFrame extends JFrame {
 		
 		descriptionArea = new JTextArea();
 		descriptionArea.setBorder(UIManager.getBorder("TextField.border"));
-		descriptionArea.setBounds(10, 182, 180, 168);
+		descriptionArea.setBounds(10, 151, 180, 168);
 		panel.add(descriptionArea);
 		lblDescription.setLabelFor(descriptionArea);
 		descriptionArea.setLineWrap(true);
+		
+		updateDescBtn = new JButton("Update Description");
+		updateDescBtn.addMouseListener(new MouseAdapter() {
+			/**
+			 * Attempt to update the selected goal's description upon click
+			 */
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if (monthlyTable.getSelectedRow() > -1) {
+					Monthly goal = model.getGoal(monthlyTable.getSelectedRow());
+					String newDesc = descriptionArea.getText();
+					MonthlyController controller = new MonthlyController(model);
+					String result = controller.updateDescription(newDesc, goal);
+					JOptionPane.showMessageDialog(null, result);
+				} else {
+					JOptionPane.showMessageDialog(null, "Please select a goal first.");
+				}
+			}
+		});
+		updateDescBtn.setBounds(10, 323, 180, 26);
+		panel.add(updateDescBtn);
 		panel_1.setLayout(null);
 		
 		scrollPane = new JScrollPane();
@@ -143,13 +178,14 @@ public class MainFrame extends JFrame {
 		JTableHeader monthlyTableHeader = monthlyTable.getTableHeader();
 		monthlyTableHeader.setBackground(new Color(17, 16, 47));
 		monthlyTableHeader.setForeground(Color.WHITE);
-		// set default cell alignment to center text
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer(); 
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER); // Set default cell alignment to center text
 		monthlyTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
 		monthlyTable.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-		// Fill description textbox when selection is made
 		monthlyTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			/**
+			 * Fill description text box when selection is made
+			 */
 			@Override
 			public void valueChanged(ListSelectionEvent event) {
 				if (monthlyTable.getSelectedRow() > -1) {
